@@ -21,4 +21,12 @@ class HomeTest extends TestCase
         $response->assertSeeText('This is the main content of the page!');
         $response->assertStatus(200);
     }
+
+    public function testContactPageIsWorking()
+    {
+        $response = $this->get('/contact');
+        $response->assertSeeText('Contact');
+        $response->assertSeeText('Contact Us');
+        $response->assertStatus(200);
+    }
 }

@@ -10,7 +10,7 @@
 <div class="form-group mb-3">
     <label class='form-label text-bold' for="content">Content</label>
     <textarea class='form-control ' name="content" id="content"cols="30" rows="10" style="resize: none;">{{ old('content', optional($post ?? null)->content) }}</textarea>
-    @error('title')
+    @error('content')
         <div class="alert alert-danger my-2 p-2">{{ $message }}</div>
     @enderror
 </div>

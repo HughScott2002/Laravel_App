@@ -6,6 +6,6 @@
 
 
 @section('content')
-    <h2>Hello World</h2>
-    <h3>Thats what Im saying</h3>
+    <h2>Welcome to Laravel</h2>
+    <h3>This is the main content of the page!</h3>
 @endsection()
