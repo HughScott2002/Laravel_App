@@ -28,3 +28,7 @@
         <div class="alert alert-info">New post!</div>
     @endif
 @endsection
+
+@section('footer')
+    @include('posts.partials.footer')
+@endsection()

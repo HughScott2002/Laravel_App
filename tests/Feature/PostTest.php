@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\BlogPost;
+use App\Models\Comment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 // use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -10,18 +11,21 @@ use Tests\TestCase;
 class PostTest extends TestCase
 {
     use RefreshDatabase;
+
     private function createDummyBlogPost()
     {
         /**
          * Creates a dummy Blog post sets the fields saves and returns the blog post
          * @return $post
          */
-        $post = new BlogPost(); //Make a new Object
-        $post->title = "New Title"; // Add the title
-        $post->content = "Content of the blog post"; //Add the Content
-        $post->save(); //Save it
+        // $post = new BlogPost(); //Make a new Object
+        // $post = BlogPost::factory()->count(1)->create();
+        // $post->title = "New Title"; // Add the title
+        // $post->content = "Content of the blog post"; //Add the Content
+        // dd($post['#attributes']);
+        // $post->save(); //Save it
 
-        return $post;
+        return BlogPost::factory()->create();
     }
 
     public function testPostForNoBlogPostsInDataBase()
@@ -31,7 +35,7 @@ class PostTest extends TestCase
         $response->assertSeeText('No Post found!');
     }
 
-    public function testPostSee1BlogPostWhenThereIs1()
+    public function testPostSee1BlogPostWhenThereIs1WithNoComments()
     {
         //Arrange
         $post = $this->createDummyBlogPost();
@@ -41,13 +45,37 @@ class PostTest extends TestCase
         $response = $this->get('/posts');
 
         //Assert
-        $response->assertSeeText("New Title");
-        $response->assertSeeText("Content of the blog post");
+        $response->assertSeeText($post->title);
+        $response->assertSeeText($post->content);
+        $response->assertSeeText('No Comments yet');
+        // dd($post->getAttributes());
+        $this->assertDatabaseHas('blog_posts', $post->getAttributes());
 
-        $this->assertDatabaseHas('blog_posts', [
-            'title' => 'New Title',
-            'content' => 'Content of the blog post'
-        ]);
+
+        // $this->assertDatabaseHas('blog_posts', [
+        //     'title' => 'New Title',
+        //     'content' => 'Content of the blog post'
+        // ]);
+    }
+
+    public function testPostSee1BlogPostWhenThereIs1WithComments()
+    {
+        //Arrange
+        $post = $this->createDummyBlogPost();
+        $count = 5; // you can change the count as you like
+
+        //Act
+        /*Uses the factory class to generate a number of fake data to test with and sends them to the
+        post id 
+        */
+        Comment::factory()->count($count)->create(['blog_post_id' => $post->id]);
+        //Get the page the
+        $response = $this->get('/posts');
+        //Assert
+        //Test if the the page loaded and is displaying the amount of comments we added
+        $response->assertSeeText($post->title);
+        $response->assertSeeText($post->content);
+        $response->assertSeeText("Comments: {$count}");
     }
 
     public function testPostFormIsValid()

@@ -13,3 +13,7 @@
     </form>
 
 @endsection()
+
+@section('footer')
+    @include('posts.partials.footer')
+@endsection()

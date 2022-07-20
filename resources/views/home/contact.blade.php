@@ -9,3 +9,7 @@
     <h2>Contact</h2>
     <h3>Contact Us</h3>
 @endsection()
+
+@section('footer')
+    @include('posts.partials.footer')
+@endsection()

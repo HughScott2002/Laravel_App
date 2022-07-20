@@ -10,7 +10,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
             <path
@@ -77,8 +77,8 @@
         <section>
             @yield('content')
         </section>
-        @yield('footer')
     </main>
+    @yield('footer')
 </body>
 
 </html>
