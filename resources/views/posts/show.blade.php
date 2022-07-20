@@ -20,10 +20,23 @@
         <p class="text-break word-break break-word word-wrap fs-3 p-md-3 px-2">{{ $post->content }}</p>
     </div>
     <div class="d-flex justify-content-end align-content-center p-2">
-
         <p>Added at {{ $post->created_at->diffForHumans() }}</p>
     </div>
 
+    <div>
+        <h4 class="text-center pb-4 fs-4 alert alert-info ">Commets</h4>
+        @forelse ($post->comments as $comment)
+            <div class="bg-light border p-3 mb-3">
+                Created: {{ $comment->created_at->diffForHumans() }}
+                {{ $comment->created_at > $comment->updated_at ? '(Ediited)' : '' }}
+                <p class="py-2">{{ $comment->content }}</p>
+            </div>
+
+    </div>
+@empty
+    <div class="alert alert-danger">No Comments</div>
+    @endforelse
+    </div>
     @if (now()->diffInMinutes($post->created_at) < 5)
         <div class="alert alert-info">New post!</div>
     @endif
