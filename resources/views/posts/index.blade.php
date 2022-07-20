@@ -11,20 +11,15 @@
             @include('posts.partials.post')
         </div>
     @empty
-        <div class="alert alert-info">
+        <div class="alert alert-info d-flex justify-content-center p-4 text-bold">
             No Post found!
         </div>
     @endforelse
 
 
-    {{-- @if (count($posts))
-        @foreach ($posts as $key => $post)
-            @include('posts.partials.post')
-            //<div>{{ $key + 1 }}. {{ $post['title'] }}</div>
-        @endforeach
-    @else
-        NO Posts Found!
-    @endif --}}
 
+@endsection()
 
+@section('footer')
+    @include('posts.partials.footer')
 @endsection()

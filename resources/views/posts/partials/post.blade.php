@@ -33,6 +33,19 @@
             <p class="card-text mb-3">
                 {{ $post->content }}
             </p>
+
+            {{-- Comments --}}
+            @if ($post->comments_count)
+                <h6 class="card-subtitle mb-2 mt-1 text-muted">
+                    <p class="alert alert-success text-center"> Comments: {{ $post->comments_count }} </p>
+                </h6>
+            @else
+                <h6 class="card-subtitle mb-2 mt-1 text-muted">
+                    <p class="alert alert-info text-center"> No Comments yet </p>
+                </h6>
+            @endif
+            {{-- End --}}
+
             <hr />
 
             <div class="d-flex bg-highlight justify-content-center align-content-center ">

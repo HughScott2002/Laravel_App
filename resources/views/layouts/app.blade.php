@@ -76,8 +76,8 @@
         @endif
         <section>
             @yield('content')
-
         </section>
+        @yield('footer')
     </main>
 </body>
 

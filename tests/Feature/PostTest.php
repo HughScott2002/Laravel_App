@@ -10,6 +10,19 @@ use Tests\TestCase;
 class PostTest extends TestCase
 {
     use RefreshDatabase;
+    private function createDummyBlogPost()
+    {
+        /**
+         * Creates a dummy Blog post sets the fields saves and returns the blog post
+         * @return $post
+         */
+        $post = new BlogPost(); //Make a new Object
+        $post->title = "New Title"; // Add the title
+        $post->content = "Content of the blog post"; //Add the Content
+        $post->save(); //Save it
+
+        return $post;
+    }
 
     public function testPostForNoBlogPostsInDataBase()
     {
@@ -21,10 +34,8 @@ class PostTest extends TestCase
     public function testPostSee1BlogPostWhenThereIs1()
     {
         //Arrange
-        $post = new BlogPost();
-        $post->title = "New Title";
-        $post->content = "Content of the blog post";
-        $post->save();
+        $post = $this->createDummyBlogPost();
+
 
         //Act
         $response = $this->get('/posts');
@@ -54,7 +65,7 @@ class PostTest extends TestCase
         $this->assertEquals(session('Status-success'), 'The Blog Post was created!');
     }
 
-    public function testPostFormInvalid()
+    public function testPostFormIsInvalid()
     {
 
         $params = [
@@ -73,26 +84,49 @@ class PostTest extends TestCase
         $this->assertEquals($messages['content'][0], "The content field is required.");
     }
 
-    public function testPostUpdate()
+    public function testPostUpdateWorks()
     {
-        //Arrange
-        $post = new BlogPost();
-        $post->title = "New Title";
-        $post->content = "Content of the blog post";
-        $post->save();
 
+        $post = $this->createDummyBlogPost();
+
+        //Check if it has all the fields in the database
         $this->assertDatabaseHas('blog_posts', $post->getAttributes());
+
+        //Params to send to the route
         $params = [
             'title' => 'A new modified Title',
             'content' => 'This is new modified contents for testing'
         ];
+        //Route Variable
+        $postIdRouteVar = '/posts/' . $post->id;
 
-        $this->put("/posts/{{$post->id}}", $params)
-            ->assertStatus(302)
-            ->assertSessionHas('Status-success');
+        //Send a put request to the /posts/id route along with the params to change the value
+        $this->put($postIdRouteVar, $params)
+            ->assertStatus(302) //Check if we got redirected meaning success
+            ->assertSessionHas('Status-success'); //Check if the success message was flashed
 
+        //Check to see if the success message is correct    
         $this->assertEquals(session('Status-success'), 'Your Record Has been updated');
-        $this->assertDatabaseMissing('blog_posts', $post->toArray());
+        //Check to see if the data created first is gone from the database
+        //Means the data is rewritten
+        $this->assertDatabaseMissing('blog_posts', $post->getAttributes());
+        //Check to see if what was sent in the params is now in the database
         $this->assertDatabaseHas('blog_posts', $params);
+    }
+
+    public function testPostDeleteWorks()
+    {
+        $post = $this->createDummyBlogPost();
+
+        $this->assertDatabaseHas('blog_posts', $post->getAttributes());
+
+        $postIdRouteVar = '/posts/' . $post->id;
+
+        //Send a put request to the /posts/id to delete the entire post
+        $this->delete($postIdRouteVar)
+            ->assertStatus(302) //Check if we got redirected meaning success
+            ->assertSessionHas('Status-success'); //Check if the success message was flashed
+
+        $this->assertDatabaseMissing('blog_posts', $post->getAttributes());
     }
 }
