@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserToBlogPostTable extends Migration
+class AddUserToBlogPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class AddUserToBlogPostTable extends Migration
      */
     public function up()
     {
-        Schema::table('blog_post', function (Blueprint $table) {
-            $table->unsignedInteger('user_id)');
-
+        Schema::table('blog_posts', function (Blueprint $table) {
+            $table->unsignedInteger('user_id');
             $table->foreign("user_id")
-                ->references('id')->on('users');
+                ->references('id')->constrained('users');
         });
     }
 
@@ -28,9 +27,9 @@ class AddUserToBlogPostTable extends Migration
      */
     public function down()
     {
-        Schema::table('blog_post', function (Blueprint $table) {
-            $table->dropColumn('user_id');
+        Schema::table('blog_posts', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 }
