@@ -1,7 +1,3 @@
 {
-    "cSpell.words": [
-        "phpredis",
-        "phpunit",
-        "sslmode"
-    ]
+    "cSpell.words": ["phpredis", "phpunit", "Softdelete", "sslmode"]
 }
