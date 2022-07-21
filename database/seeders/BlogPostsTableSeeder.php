@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use App\Models\BlogPost;
 use Illuminate\Database\Seeder;
 
 class BlogPostsTableSeeder extends Seeder
@@ -13,6 +15,13 @@ class BlogPostsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $users = User::all();
+        BlogPost::factory()
+            ->count(50)
+            ->make()
+            ->each(function ($post) use ($users) {
+                $post->user_id = $users->random()->id;
+                $post->save();
+            });
     }
 }
