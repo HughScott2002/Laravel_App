@@ -9,14 +9,14 @@
     <div class="py-2 py-lg-4">
         <h2 class="p-md-4 py-4 px-2 text-center fs-2 fw-bolder fst-italic " style="background: rgb(215, 205, 192); ">
             {{ $post->title }}</h2>
-        <div class="d-flex justify-content-end">
+        {{-- <div class="d-flex justify-content-end">
             <h3 class=" mt-2 text-muted fs-5 fw-light fst-italic">Author: Mary Jane</h3>
             <div class="mx-2 my-2 pb-2" style="height: 4rem; width: 4rem; ">
                 <img class="hover rounded-circle img-fluid"
                     src="https://assets.papelpop.com/wp-content/uploads/2022/02/kirsten-dunst.png" alt="author image" />
             </div>
 
-        </div>
+        </div> --}}
         <p class="text-break word-break break-word word-wrap fs-3 p-md-3 px-2">{{ $post->content }}</p>
     </div>
     <div class="d-flex justify-content-end align-content-center p-2">
