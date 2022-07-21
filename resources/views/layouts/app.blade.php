@@ -26,7 +26,6 @@
         </symbol>
     </svg>
 
-
     <header
         class="vw-100 d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom shadow-sm mb-3">
         <div class="my-0 me-md-auto pr-md-5">
@@ -40,14 +39,23 @@
             <nav class="">
                 <a class="p-2 text-dark" href="{{ route('home.index') }}">Home</a>
                 <a class="p-2 text-dark" href="{{ route('home.contact') }}">Contact</a>
-                <a class="p-2 text-dark" href="{{ route('posts.index') }}">Blog Posts</a>
-                <a class="p-2 text-dark" href="{{ route('posts.create') }}">Add Blog Post</a>
+                <a class="p-2 text-dark" href="{{ route('posts.index') }}">All Posts</a>
+                @guest
+                    <a class="p-2 text-dark" href="{{ route('register') }}">Register</a>
+                    <a class="p-2 text-dark" href="{{ route('login') }}">Login</a>
+                @else
+                    <a class="p-2 text-dark" href="{{ route('posts.create') }}">Create Post</a>
+                    <a class="p-2 text-dark" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();document.getElementById('logout_form').submit();">
+                        Logout: ({{ Auth::user()->name }})</a>
+
+                    <form action="{{ route('logout') }}" id="logout_form" style="display: none;" method="POST">
+                        @csrf
+                    </form>
+                @endguest
             </nav>
         </div>
     </header>
-
-
-
 
     <main class="container">
         @if (session('Status-success'))

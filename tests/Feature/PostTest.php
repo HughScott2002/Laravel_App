@@ -80,13 +80,17 @@ class PostTest extends TestCase
 
     public function testPostFormIsValid()
     {
+        //Needs Validations
+        // $user = $this->user();
 
         $params = [
             'title' => 'Valid title',
             'content' => 'At least 10 characters'
         ];
+        // $this->actingAs($user);
 
-        $this->post('/posts', $params)
+        $this->actingAs($this->user())
+            ->post('/posts', $params)
             ->assertStatus(302)
             ->assertSessionHas("Status-success");
 
@@ -101,7 +105,8 @@ class PostTest extends TestCase
             'content' => ' '
         ];
 
-        $this->post('/posts', $params)
+        $this->actingAs($this->user())
+            ->post('/posts', $params)
             ->assertStatus(302)
             ->assertSessionHas('errors');
 
@@ -129,7 +134,8 @@ class PostTest extends TestCase
         $postIdRouteVar = '/posts/' . $post->id;
 
         //Send a put request to the /posts/id route along with the params to change the value
-        $this->put($postIdRouteVar, $params)
+        $this->actingAs($this->user())
+            ->put($postIdRouteVar, $params)
             ->assertStatus(302) //Check if we got redirected meaning success
             ->assertSessionHas('Status-success'); //Check if the success message was flashed
 
@@ -151,7 +157,8 @@ class PostTest extends TestCase
         $postIdRouteVar = '/posts/' . $post->id;
 
         //Send a put request to the /posts/id to delete the entire post
-        $this->delete($postIdRouteVar)
+        $this->actingAs($this->user())
+            ->delete($postIdRouteVar)
             ->assertStatus(302) //Check if we got redirected meaning success
             ->assertSessionHas('Status-success'); //Check if the success message was flashed
 
