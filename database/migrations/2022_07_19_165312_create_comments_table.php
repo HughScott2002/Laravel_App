@@ -23,8 +23,8 @@ class CreateCommentsTable extends Migration
             $table->foreignId("blog_post_id")
                 // ->references('id')->on('blog_posts')
                 ->onUpdate('cascade')
-                ->onDelete('cascade')
-                ->constrained('blog_posts');
+                ->constrained('blog_posts')
+                ->onDelete('cascade');
 
             // $table->foreignId('blog_posts_id')
             //     ->index()
