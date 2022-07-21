@@ -18,10 +18,13 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
 
             $table->text('content');
-            $table->unsignedBigInteger('blog_post_id')
-                ->index();
-            $table->foreign("blog_post_id")
-                ->references('id')->on('blog_posts');
+            // $table->unsignedBigInteger('blog_post_id')
+            //     ->index();
+            $table->foreignId("blog_post_id")
+                // ->references('id')->on('blog_posts')
+                ->onUpdate('cascade')
+                ->onDelete('cascade')
+                ->constrained('blog_posts');
 
             // $table->foreignId('blog_posts_id')
             //     ->index()

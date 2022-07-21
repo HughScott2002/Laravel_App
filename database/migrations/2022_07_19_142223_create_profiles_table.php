@@ -21,11 +21,11 @@ class CreateProfilesTable extends Migration
             // $table->unsignedInteger('author_id')->unique();
             // $table->foreign('author_id')->references('id')->on('authors');
             $table->foreignId('author_id')
-                ->unique()
-                ->references('id')->on('authors')
-                ->constrained()
                 ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onDelete('cascade')
+                ->constrained('authors');
+            // ->unique()
+            // ->references('id')->on()
         });
     }
 
