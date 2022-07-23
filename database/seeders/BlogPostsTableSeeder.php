@@ -17,7 +17,7 @@ class BlogPostsTableSeeder extends Seeder
     {
         $users = User::all();
         BlogPost::factory()
-            ->count(50)
+            ->count(100)
             ->make()
             ->each(function ($post) use ($users) {
                 $post->user_id = $users->random()->id;

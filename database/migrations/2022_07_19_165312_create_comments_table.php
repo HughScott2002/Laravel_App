@@ -13,6 +13,7 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('comments');
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
@@ -20,12 +21,16 @@ class CreateCommentsTable extends Migration
             $table->text('content');
             // $table->unsignedBigInteger('blog_post_id')
             //     ->index();
+            // $table->dropIfExists()->foreignId("blog_post_id");
             $table->foreignId("blog_post_id")
                 // ->references('id')->on('blog_posts')
-                ->onUpdate('cascade')
                 ->constrained('blog_posts')
+                ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            if (env('DB_CONNECTION') !== 'sqlite_testing') {
+                $table->dropForeign(['blog_post_id']);
+            }
             // $table->foreignId('blog_posts_id')
             //     ->index()
             //     ->unique()
@@ -33,6 +38,7 @@ class CreateCommentsTable extends Migration
             //     ->constrained()
             //     ->onUpdate('cascade')
             //     ->onDelete('cascade');
+
         });
     }
 

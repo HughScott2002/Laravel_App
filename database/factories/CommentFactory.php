@@ -19,11 +19,11 @@ class CommentFactory extends Factory
         return [
             //
             // 'id'=> $this->faker->text(),
-            'content' => $this->faker->realText(),
             // 'created_at '=> $this->faker->text(),
             // 'updated_at'=> $this->faker->text(),
             // 'blog_post_id'=> $this->faker->text(),
-
+            'content' => $this->faker->realText(),
+            'created_at' => $this->faker->dateTimeBetween('-3 years'),
         ];
     }
 }

@@ -30,6 +30,10 @@
                 Created: {{ $post->created_at->diffForHumans() }}
 
             </h6>
+            <h6 class="card-subtitle mb-2 mt-1 text-muted">
+                Author: {{ $post->user->name }}
+
+            </h6>
             <p class="card-text mb-3">
                 {{ $post->content }}
             </p>
@@ -49,14 +53,18 @@
             <hr />
 
             <div class="d-flex bg-highlight justify-content-center align-content-center ">
-                <div>
-                    <a class='btn btn-primary px-4' href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
-                </div>
-                <form class='mx-3' action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-block"> DELETE!</button>
-                </form>
+                @can('update', $post)
+                    <div>
+                        <a class='btn btn-primary px-4' href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
+                    </div>
+                @endcan
+                @can('delete', $post)
+                    <form class='mx-3' action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-block"> DELETE!</button>
+                    </form>
+                @endcan
             </div>
 
         </div>

@@ -25,6 +25,7 @@ class UsersTableSeeder extends Seeder
                 'rounds' => 12,
             ]),
             'remember_token' => Str::random(10),
+            'is_admin' => true
         ])->count(1)->create();
 
         User::factory()->count(20)->create();

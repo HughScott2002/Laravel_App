@@ -17,6 +17,10 @@
             </div>
 
         </div> --}}
+        <div class="d-flex justify-content-end">
+            <h3 class=" mt-2 text-muted fs-5 fw-light fst-italic">Author: {{ $post->user->name }}</h3>
+
+        </div>
         <p class="text-break word-break break-word word-wrap fs-3 p-md-3 px-2">{{ $post->content }}</p>
     </div>
     <div class="d-flex justify-content-end align-content-center p-2">

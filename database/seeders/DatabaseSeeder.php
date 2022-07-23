@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+
         // \App\Models\User::factory(10)->create();
         // $jane = DB::table('users')->insert([
         //     'name' => 'Mary Jane Parker',

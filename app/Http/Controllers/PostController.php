@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 // use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -22,7 +24,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index', ['posts' => BlogPost::withCount('comments')->get()]);
+        return view(
+            'posts.index',
+            [
+                'posts' => BlogPost::Latest()->withCount('comments', 'user')->get(),
+                'mostCommented' => BlogPost::mostCommented()->take(5)->get(),
+
+            ]
+        );
     }
 
     /**
@@ -45,6 +54,7 @@ class PostController extends Controller
     {
         //
         $validated = $request->validated();
+        $validated['user_id'] = $request->user()->id;
         $post = BlogPost::create($validated);
 
         // $post->title = $validated['title'];
@@ -72,7 +82,7 @@ class PostController extends Controller
         // abort_if(!isset($this->posts[$id]), 404);
         return view(
             'posts.show',
-            ['post' => BlogPost::with('comments')->findOrFail($id)]
+            ['post' => BlogPost::with('comments', 'user')->findOrFail($id)]
         );
     }
 
@@ -97,7 +107,14 @@ class PostController extends Controller
      */
     public function update(StorePost $request, $id)
     {
+
         $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update-post', $post)) {
+        //     abort(403);
+        // }
+        $this->authorize('update', $post);
+
         $validated = $request->validated();
         $post->fill($validated);
         $post->save();
@@ -119,6 +136,11 @@ class PostController extends Controller
         //
         // dd($id);
         $post = BlogPost::findOrFail($id);
+        // if (Gate::denies('delete-post', $post)) {
+        //     abort(403);
+        // }
+        $this->authorize('delete', $post);
+
         $post->delete();
 
         session()->flash('Status-success', 'Blog post was deleted!');
