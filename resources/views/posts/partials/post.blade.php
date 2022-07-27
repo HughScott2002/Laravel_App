@@ -59,23 +59,25 @@
             {{-- End --}}
 
             <hr />
+            @auth
 
-            @if (!$post->trashed())
-                <div class="d-flex bg-highlight justify-content-center align-content-center ">
-                    @can('update', $post)
-                        <div>
-                            <a class='btn btn-primary px-4' href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
-                        </div>
-                    @endcan
-                    @can('delete', $post)
-                        <form class='mx-3' action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-block"> DELETE!</button>
-                        </form>
-                    @endcan
-                </div>
-            @endif
+                @if (!$post->trashed())
+                    <div class="d-flex bg-highlight justify-content-center align-content-center ">
+                        @can('update', $post)
+                            <div>
+                                <a class='btn btn-primary px-4' href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
+                            </div>
+                        @endcan
+                        @can('delete', $post)
+                            <form class='mx-3' action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-block"> DELETE!</button>
+                            </form>
+                        @endcan
+                    </div>
+                @endif
+            @endauth
 
         </div>
     </div>

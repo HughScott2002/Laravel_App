@@ -29,7 +29,7 @@
 
     <div>
         <h4 class=" pb-4 fs-4 alert alert-info text-center">Comments</h4>
-        <form action="{{ route('comments') }} " method="POST">
+        <form action="{{ route('comments.store') }} " method="POST">
             @csrf
             <div class="form-floating mb-3">
                 <textarea name="comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"

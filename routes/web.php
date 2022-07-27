@@ -37,8 +37,8 @@ Route::get('/single', AboutController::class)
 
 Route::resource('posts', PostController::class);
 
-Route::post('/comment/new', [CommentsController::class, 'store'])
-    ->name('comments');
+Route::post('/comment/store', [CommentsController::class, 'store'])
+    ->name('comments.store');
 Route::delete('/comment/destroy', [CommentsController::class, 'destroy'])
     ->name('comments.destroy');
 
