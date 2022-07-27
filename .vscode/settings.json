@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
+        "Authenticatable",
         "phpredis",
         "phpunit",
+        "Softdelete",
         "sslmode"
     ]
 }

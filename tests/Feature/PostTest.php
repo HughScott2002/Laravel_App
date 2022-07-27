@@ -12,7 +12,7 @@ class PostTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function createDummyBlogPost()
+    private function createDummyBlogPost($userId = null): BlogPost
     {
         /**
          * Creates a dummy Blog post sets the fields saves and returns the blog post
@@ -25,7 +25,9 @@ class PostTest extends TestCase
         // dd($post['#attributes']);
         // $post->save(); //Save it
 
-        return BlogPost::factory()->create();
+        return BlogPost::factory()->create([
+            'user_id' => $userId ?? $this->user()->id,
+        ]);
     }
 
     public function testPostForNoBlogPostsInDataBase()
@@ -120,7 +122,8 @@ class PostTest extends TestCase
     public function testPostUpdateWorks()
     {
 
-        $post = $this->createDummyBlogPost();
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
 
         //Check if it has all the fields in the database
         $this->assertDatabaseHas('blog_posts', $post->getAttributes());
@@ -134,7 +137,7 @@ class PostTest extends TestCase
         $postIdRouteVar = '/posts/' . $post->id;
 
         //Send a put request to the /posts/id route along with the params to change the value
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->put($postIdRouteVar, $params)
             ->assertStatus(302) //Check if we got redirected meaning success
             ->assertSessionHas('Status-success'); //Check if the success message was flashed
@@ -150,18 +153,20 @@ class PostTest extends TestCase
 
     public function testPostDeleteWorks()
     {
-        $post = $this->createDummyBlogPost();
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
 
         $this->assertDatabaseHas('blog_posts', $post->getAttributes());
 
         $postIdRouteVar = '/posts/' . $post->id;
 
         //Send a put request to the /posts/id to delete the entire post
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->delete($postIdRouteVar)
             ->assertStatus(302) //Check if we got redirected meaning success
             ->assertSessionHas('Status-success'); //Check if the success message was flashed
 
-        $this->assertDatabaseMissing('blog_posts', $post->getAttributes());
+        // $this->assertDatabaseMissing('blog_posts', $post->getAttributes());
+        $this->assertSoftDeleted('blog_posts', $post->getAttributes());
     }
 }
