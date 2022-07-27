@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +37,10 @@ Route::get('/single', AboutController::class)
 
 Route::resource('posts', PostController::class);
 
+Route::post('/comment/new', [CommentsController::class, 'store'])
+    ->name('comments');
+Route::delete('/comment/destroy', [CommentsController::class, 'destroy'])
+    ->name('comments.destroy');
+
+// Route::resource('comment', CommentsController::class)
 Auth::routes();

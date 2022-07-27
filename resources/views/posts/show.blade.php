@@ -28,22 +28,64 @@
     </div>
 
     <div>
-        <h4 class="text-center pb-4 fs-4 alert alert-info ">Commets</h4>
+        <h4 class=" pb-4 fs-4 alert alert-info text-center">Comments</h4>
+        <form action="{{ route('comments') }} " method="POST">
+            @csrf
+            <div class="form-floating mb-3">
+                <textarea name="comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                    style="height: 100px"></textarea>
+                <label for="floatingTextarea2"> Add Comment</label>
+            </div>
+            <input type="text" name="blog_post_id" value="{{ $post->id }}" hidden />
+
+            <div class="my-4">
+                <button type="submit" class="btn btn-primary ">Submit</button>
+            </div>
+
+        </form>
+
         @forelse ($post->comments as $comment)
             <div class="bg-light border p-3 mb-3">
-                Created: {{ $comment->created_at->diffForHumans() }}
-                {{ $comment->created_at > $comment->updated_at ? '(Ediited)' : '' }}
+                <div>
+                    Created:
+                    {{ $comment->created_at->diffForHumans() }}{{ $comment->created_at > $comment->updated_at ? '(Ediited)' : '' }}
+                    @if ($comment->trashed())
+                        <span>
+                            Trashed
+                        </span>
+                    @endif
+                </div>
+                {{-- <div>
+                    Username: {{ $post->user->name }}
+
+                </div> --}}
                 <p class="py-2">{{ $comment->content }}</p>
+
+                @if (!$comment->trashed())
+                    <form action="{{ route('comments.destroy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="text" name='comment_id' value='{{ $comment->id }}' hidden />
+                        <input type="text" name='blog_post_id' value="{{ $post->id }}" hidden />
+                        <button type="submit" class="btn btn-danger">Delete!</button>
+                    </form>
+                @endif
             </div>
 
     </div>
 @empty
-    <div class="alert alert-danger">No Comments</div>
+    {{-- <div class="alert alert-danger">No Comments</div> --}}
+    @component('components.alert', ['type' => 'danger'])
+        No Comments
+    @endcomponent
     @endforelse
-    </div>
     @if (now()->diffInMinutes($post->created_at) < 5)
-        <div class="alert alert-info">New post!</div>
+        {{-- <div class="alert alert-info">New post!</div> --}}
+        @component('components.alert', ['type' => 'info'])
+            New Post!
+        @endcomponent
     @endif
+
 @endsection
 
 @section('footer')

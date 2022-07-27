@@ -16,7 +16,7 @@ class BlogPostFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(8), // Add the title
-            'content' => $this->faker->realText($maxNbChars = 200, $indexSize = 2),
+            'content' => $this->faker->realText($maxNbChars = 900, $indexSize = 2),
             'created_at' => $this->faker->dateTimeBetween('-3 years'),
 
         ];

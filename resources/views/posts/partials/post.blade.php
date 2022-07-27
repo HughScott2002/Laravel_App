@@ -1,24 +1,32 @@
 <div class="flex justify-content-center">
     <div class="card">
-        @if (now()->diffInMinutes($post->created_at) < 5)
-            <div class="card-header bg-info">
-                Featurd Post: Now!
-            </div>
-        @elseif (now()->diffInMinutes($post->created_at) < 60)
-            <div class="card-header">
-
-                Featurd Post: Hour
-            </div>
-        @elseif (now()->diffInMinutes($post->created_at) < 1440)
-            <div class="card-header ">
-
-                Featurd Post: Today
+        @if ($post->trashed())
+            <div class="card-header bg-danger">
+                Trashed
             </div>
         @else
-            <div class="card-header">
-                Featurd Post
-            </div>
+            @if (now()->diffInMinutes($post->created_at) < 5)
+                <div class="card-header bg-info">
+                    Featurd Post: Now!
+                </div>
+            @elseif (now()->diffInMinutes($post->created_at) < 60)
+                <div class="card-header">
+
+                    Featurd Post: Hour
+                </div>
+            @elseif (now()->diffInMinutes($post->created_at) < 1440)
+                <div class="card-header ">
+
+                    Featurd Post: Today
+                </div>
+            @else
+                <div class="card-header">
+                    Featurd Post
+                </div>
+            @endif
         @endif
+
+
 
         <div class="card-body">
             <h5 class="card-title">
@@ -52,20 +60,22 @@
 
             <hr />
 
-            <div class="d-flex bg-highlight justify-content-center align-content-center ">
-                @can('update', $post)
-                    <div>
-                        <a class='btn btn-primary px-4' href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
-                    </div>
-                @endcan
-                @can('delete', $post)
-                    <form class='mx-3' action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-block"> DELETE!</button>
-                    </form>
-                @endcan
-            </div>
+            @if (!$post->trashed())
+                <div class="d-flex bg-highlight justify-content-center align-content-center ">
+                    @can('update', $post)
+                        <div>
+                            <a class='btn btn-primary px-4' href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
+                        </div>
+                    @endcan
+                    @can('delete', $post)
+                        <form class='mx-3' action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-block"> DELETE!</button>
+                        </form>
+                    @endcan
+                </div>
+            @endif
 
         </div>
     </div>
