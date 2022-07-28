@@ -14,9 +14,9 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    // mass assigned
     use SoftDeletes;
 
+    // mass assigned
     protected $fillable = ['title', 'content', 'user_id'];
 
     public function comments()
@@ -29,15 +29,20 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
     }
+
     public function scopeMostCommented(Builder $query)
     {
         return $query->withCount('comments')->orderBy('comments_count', 'desc');
     }
-
 
 
     public static function boot()
