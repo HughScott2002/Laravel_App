@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostTagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,9 @@ Route::post('/comment/store', [CommentsController::class, 'store'])
     ->name('comments.store');
 Route::delete('/comment/destroy', [CommentsController::class, 'destroy'])
     ->name('comments.destroy');
+
+Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])
+    ->name('posts.tags.index');
 
 // Route::resource('comment', CommentsController::class)
 Auth::routes();

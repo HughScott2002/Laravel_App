@@ -27,27 +27,15 @@ class PostController extends Controller
     public function index()
     {
         $time = now()->addMinutes(10);
-        $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-mostCommented', $time, function () {
-            return BlogPost::mostCommented()->take(5)->get();
+        $posts = Cache::tags(['blog-post'])->remember('blog-post-posts', $time, function () {
+            return BlogPost::Latest()->withCount('comments')->with('user', 'tags')->get();
         });
 
-        $posts = Cache::tags(['blog-post'])->remember('blog-post-posts', $time, function () {
-            return BlogPost::Latest()->withCount('comments')->with('user')->get();
-        });
-        $mostActive = Cache::remember('blog-post-mostActive', $time, function () {
-            return User::withMostBlogPosts()->take(3)->get();
-        });
-        $mostActiveLastMonth = Cache::remember('blog-post-mostActiveLastMonth', $time, function () {
-            return User::WithMostBlogPostsLastMonth()->take(5)->get();
-        });
 
         return view(
             'posts.index',
             [
                 'posts' => $posts,
-                'mostCommented' => $mostCommented,
-                'mostActive' => $mostActive,
-                'mostActiveLastMonth' => $mostActiveLastMonth
             ]
         );
     }
@@ -99,7 +87,8 @@ class PostController extends Controller
     {
         // abort_if(!isset($this->posts[$id]), 404);
         $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
-            return BlogPost::with('comments', 'user')->findOrFail($id);
+            return BlogPost::with('comments')->with('user')->with('tags')->findOrFail($id);
+            // return BlogPost::with('comments', 'user')->findOrFail($id);
         });
 
         $sessionId = session()->getId();

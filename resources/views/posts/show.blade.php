@@ -24,6 +24,9 @@
         <div class="">
             <p class="fst-italic fs-5 bg-info py-2 bg-opacity-25 px-3">Being read by:
                 {{ $counter > 1 ? "{$counter} persons" : '0' }}</p>
+            <div>
+                <x-tags :tags="$post->tags" />
+            </div>
         </div>
         <div>
             <p class="text-break word-break break-word word-wrap fs-3 p-md-3 px-2">{{ $post->content }}</p>

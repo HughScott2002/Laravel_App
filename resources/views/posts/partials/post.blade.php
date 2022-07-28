@@ -46,6 +46,9 @@
                 {{ $post->content }}
             </p>
 
+            <div>
+                <x-tags :tags="$post->tags" />
+            </div>
             {{-- Comments --}}
             @if ($post->comments_count)
                 <h6 class="card-subtitle mb-2 mt-1 text-muted">

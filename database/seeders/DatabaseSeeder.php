@@ -32,12 +32,14 @@ class DatabaseSeeder extends Seeder
         //     ]),
         //     'remember_token' => Str::random(10),
         // ]);
-        Cache::tags(['blog-post'])->flush();
+        // Cache::tags(['blog-post'])->flush();
+        Cache::flush();
         // dd($users->count(), $jane->count(), $else->count());
         $this->call([
             UsersTableSeeder::class,
             BlogPostsTableSeeder::class,
-            CommentsTableSeeder::class
+            CommentsTableSeeder::class,
+            TagsTableSeeder::class
         ]);
     }
 }
