@@ -19,9 +19,15 @@
         </div> --}}
         <div class="d-flex justify-content-end">
             <h3 class=" mt-2 text-muted fs-5 fw-light fst-italic">Author: {{ $post->user->name }}</h3>
-
         </div>
-        <p class="text-break word-break break-word word-wrap fs-3 p-md-3 px-2">{{ $post->content }}</p>
+
+        <div class="">
+            <p class="fst-italic fs-5 bg-info py-2 bg-opacity-25 px-3">Being read by:
+                {{ $counter > 1 ? "{$counter} persons" : '0' }}</p>
+        </div>
+        <div>
+            <p class="text-break word-break break-word word-wrap fs-3 p-md-3 px-2">{{ $post->content }}</p>
+        </div>
     </div>
     <div class="d-flex justify-content-end align-content-center p-2">
         <p>Added at {{ $post->created_at->diffForHumans() }}</p>

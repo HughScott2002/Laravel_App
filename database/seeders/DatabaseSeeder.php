@@ -6,6 +6,8 @@ use App\Models\BlogPost;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
+
 // use Illuminate\Support\Facades\DB; 
 
 
@@ -30,7 +32,7 @@ class DatabaseSeeder extends Seeder
         //     ]),
         //     'remember_token' => Str::random(10),
         // ]);
-
+        Cache::tags(['blog-post'])->flush();
         // dd($users->count(), $jane->count(), $else->count());
         $this->call([
             UsersTableSeeder::class,
