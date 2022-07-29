@@ -15,7 +15,12 @@ class PostTagController extends Controller
             return Tag::findOrFail($tag);
         });
         $bp = Cache::tags(['blog-post'])->remember("blog-post-tag-{$tag}", $time, function () use ($tag) {
-            return $tag->blogPosts;
+            return $tag->blogPosts()
+                ->latest()
+                ->withCount('comments')
+                ->with('user')
+                ->with('tags')
+                ->get();
         });
 
         return view('posts.index', [

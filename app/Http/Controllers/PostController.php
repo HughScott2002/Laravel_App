@@ -87,7 +87,13 @@ class PostController extends Controller
     {
         // abort_if(!isset($this->posts[$id]), 404);
         $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
-            return BlogPost::with('comments')->with('user')->with('tags')->findOrFail($id);
+            return BlogPost::with('comments', 'tags', 'comments.user')
+                ->findOrFail($id);
+            // return BlogPost::with('comments', 'tags', 'user', 'comments.user')
+            // ->findOrFail($id)
+            // ->with('tags')
+            // ->with('user')
+            // ->with('comments.user')
             // return BlogPost::with('comments', 'user')->findOrFail($id);
         });
 
@@ -122,8 +128,11 @@ class PostController extends Controller
 
         $counter = Cache::tags(['blog-post'])->get($counterKey);
 
-        $id = auth()->user()->id ?? 0;
+        $id = Cache::remember('auth-key', now()->addMinutes(5), function () {
+            return auth()->user()->id ?? 0;
+        });
 
+        //if the id is 0 then there will be no user found output will be null
         return view(
             'posts.show',
             [
