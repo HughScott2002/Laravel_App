@@ -122,11 +122,15 @@ class PostController extends Controller
 
         $counter = Cache::tags(['blog-post'])->get($counterKey);
 
+        $id = auth()->user()->id ?? 0;
+
         return view(
             'posts.show',
             [
                 'post' => $blogPost,
                 'counter' => $counter,
+                'user' => User::find($id),
+
             ]
         );
     }

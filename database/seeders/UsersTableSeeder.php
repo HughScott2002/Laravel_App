@@ -17,18 +17,34 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->state([
-            'name' => 'Mary Jane Parker',
-            'email' => 'maryJane@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password', [
-                'rounds' => 12,
-            ]),
-            'remember_token' => Str::random(10),
-            'is_admin' => true
-        ])->count(1)->create();
+        if (User::find(1) !== null) {
+            User::factory()->count(20)->create();
+        } else {
+            User::factory()->state([
+                'name' => 'Mary Jane Parker',
+                'email' => 'maryJane@gmail.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password', [
+                    'rounds' => 12,
+                ]),
+                'remember_token' => Str::random(10),
+                'is_admin' => true
+            ])->count(1)->create();
 
-        User::factory()->count(20)->create();
+            User::factory()->count(20)->create();
+        }
+        // User::factory()->state([
+        //     'name' => 'Mary Jane Parker',
+        //     'email' => 'maryJane@gmail.com',
+        //     'email_verified_at' => now(),
+        //     'password' => Hash::make('password', [
+        //         'rounds' => 12,
+        //     ]),
+        //     'remember_token' => Str::random(10),
+        //     'is_admin' => true
+        // ])->count(1)->create();
+
+        // User::factory()->count(20)->create();
         // dd(get_class($jane), get_class($users));
 
     }

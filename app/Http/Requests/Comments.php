@@ -25,7 +25,8 @@ class Comments extends FormRequest
     {
         return [
             'comment' => 'required|min:1',
-            'blog_post_id' => 'required'
+            'blog_post_id' => 'required',
+            'user_id' => 'required'
         ];
     }
 }

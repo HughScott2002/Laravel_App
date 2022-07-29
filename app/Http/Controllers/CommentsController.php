@@ -14,13 +14,25 @@ class CommentsController extends Controller
 {
     //
 
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['store', 'destroy']);
+    }
     public function store(Comments $request)
     {
+        // dd($request);
         $verified = $request->validated();
+        // dd($verified);
         $comment = new Comment();
         $comment->content = $verified['comment'];
-        $blog_post_id = $verified['blog_post_id'];
+        $blog_post_id = (int) $verified['blog_post_id'];
         $comment->blog_post_id = $blog_post_id;
+        $user_id = (int) $verified['user_id'];
+        if ($user_id === null || $user_id <= 0) {
+            return redirect()->route('login');
+        }
+        $comment->user_id = $user_id;
+
         $comment->save();
 
         Cache::tags(['blog-post'])->forget("blog-post-{$blog_post_id}");

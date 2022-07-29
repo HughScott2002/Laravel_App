@@ -37,15 +37,36 @@
     </div>
 
     <div>
-        <h4 class=" pb-4 fs-4 alert alert-info text-center">Comments</h4>
-        <form action="{{ route('comments.store') }} " method="POST">
+        <h4 class="pb-4 fs-4 alert alert-info text-center">Comments</h4>
+        <form action="{{ route('comments.store') }}" method="POST" class="needs-validation" novalidate>
             @csrf
             <div class="form-floating mb-3">
                 <textarea name="comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                    style="height: 100px"></textarea>
+                    style="height: 10rem; resize: none;" required></textarea>
                 <label for="floatingTextarea2"> Add Comment</label>
+                <div class="alert alert-success my-2 p-2 valid-feedback">Looks vaild to me</div>
+                <div class="alert alert-danger my-2 p-2 invalid-feedback">Invaild...please fix</div>
+
+                {{-- <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Required
+                </div> --}}
+                {{-- @error('comment')
+                    <div class="alert alert-danger my-2 p-2">{{ $message }}</div>
+                @enderror --}}
+
             </div>
             <input type="text" name="blog_post_id" value="{{ $post->id }}" hidden />
+            @guest
+                <input type="number" name="user_id" value="{{ (int) -1 }}" hidden />
+
+            @endguest
+            @auth
+
+                <input type="number" name="user_id" value="{{ (int) $user->id }}" hidden />
+            @endauth
 
             <div class="my-4">
                 <button type="submit" class="btn btn-primary ">Submit</button>
@@ -64,21 +85,29 @@
                         </span>
                     @endif
                 </div>
+                <div>
+                    User: {{ $comment->user->name }}
+                </div>
                 {{-- <div>
                     Username: {{ $post->user->name }}
 
                 </div> --}}
                 <p class="py-2">{{ $comment->content }}</p>
+                @auth
 
-                @if (!$comment->trashed())
-                    <form action="{{ route('comments.destroy') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <input type="text" name='comment_id' value='{{ $comment->id }}' hidden />
-                        <input type="text" name='blog_post_id' value="{{ $post->id }}" hidden />
-                        <button type="submit" class="btn btn-danger">Delete!</button>
-                    </form>
-                @endif
+                    @if (!$comment->trashed())
+                        <form action="{{ route('comments.destroy') }}" method="POST" class="needs-validation" novalidate>
+                            @csrf
+                            @method('DELETE')
+                            <input type="text" name='comment_id' value='{{ $comment->id }}' hidden />
+                            <input type="text" name='blog_post_id' value="{{ $post->id }}" hidden />
+                            {{-- <input type="number" name="user_id" value="{{ (int) $user->id }}" hidden /> --}}
+                            {{-- {{ dd($user->id) }} --}}
+
+                            <button type="submit" class="btn btn-danger">Delete!</button>
+                        </form>
+                    @endif
+                @endauth
             </div>
 
     </div>

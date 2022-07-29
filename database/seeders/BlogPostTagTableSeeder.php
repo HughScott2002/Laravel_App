@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\BlogPost;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class BlogPostTagTableSeeder extends Seeder
@@ -13,6 +15,21 @@ class BlogPostTagTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $tagCount = Tag::all()->count();
+
+        if (0 === $tagCount) {
+            $this->command->info('No tags found, skipping assigning tags to blog posts');
+            return;
+        }
+
+        // $howManyMin = (int)$this->command->ask("Minimum tags on blog post?");
+        $howManyMin = 1;
+        $howManyMax = 3;
+        // $howManyMax = min((int)$this->command->ask("Maximum tags on blog post?", $tagCount), $tagCount);
+        BlogPost::all()->each(function (BlogPost $post) use ($howManyMin, $howManyMax) {
+            $take = random_int($howManyMin, $howManyMax);
+            $tags = Tag::inRandomOrder()->take($take)->get()->pluck('id');
+            $post->tags()->sync($tags);
+        });
     }
 }
