@@ -10,12 +10,12 @@
     <form enctype="multipart/form-data" action="{{ route('posts.update', ['post' => $post->id]) }}" method="POST">
         @csrf
         @method('PUT')
-        @include('posts.partials.form')
+        @include('posts.partials._form')
 
     </form>
 
 @endsection()
 
 @section('footer')
-    @include('posts.partials.footer')
+    @include('posts.partials._footer')
 @endsection()

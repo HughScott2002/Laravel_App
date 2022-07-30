@@ -10,7 +10,7 @@
         <div class="col-8">
             @forelse ($posts as $key => $post)
                 <div class="p-4 p-lg-5 p-md-4 p-sm-4">
-                    @include('posts.partials.post')
+                    @include('posts.partials._post')
 
                 </div>
             @empty
@@ -94,5 +94,5 @@
 @endsection()
 
 @section('footer')
-    @include('posts.partials.footer')
+    @include('posts.partials._footer')
 @endsection()

@@ -27,8 +27,7 @@
             <label class="form-check-label" for="rememberMe">
                 Remeber me
             </label>
-            <input class="form-check-input" type="checkbox" value="{{ old('remember') ? 'checked' : '' }}"
-                id="rememberMe">
+            <input class="form-check-input" type="checkbox" value="{{ old('remember') ? 'checked' : '' }}" id="rememberMe">
         </div>
         <button type="submit" class="btn btn-primary btn-block ">Login
 
@@ -38,7 +37,7 @@
 @endsection()
 
 @section('footer')
-    @include('posts.partials.footer')
+    @include('posts.partials._footer')
 @endsection()
 
 {{-- @error('title')
