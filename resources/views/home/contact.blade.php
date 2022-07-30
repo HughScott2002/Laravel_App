@@ -15,5 +15,5 @@
 @endsection()
 
 @section('footer')
-    @include('posts.partials.footer')
+    @include('posts.partials._footer')
 @endsection()

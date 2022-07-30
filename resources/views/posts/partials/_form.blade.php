@@ -8,12 +8,22 @@
 </div>
 
 <div class="form-group mb-3">
+    <label class='form-label text-bold' for="thumbnail">Thumbnail</label>
+    <input class='form-control' type="file" name="thumbnail" id="thumbnail" multiple />
+    <div class="alert alert-danger my-2 p-2 invalid-feedback" required>Please Upload a file</div>
+    @error('content')
+    @enderror
+</div>
+
+<div class="form-group mb-3">
     <label class='form-label text-bold' for="content">Content</label>
     <textarea class='form-control ' name="content" id="content"cols="30" rows="10" style="resize: none;">{{ old('content', optional($post ?? null)->content) }}</textarea>
     @error('content')
         <div class="alert alert-danger my-2 p-2">{{ $message }}</div>
     @enderror
 </div>
+
+
 {{-- <div class="d-flex justify-content-center"> --}}
 <div class="d-grid">
     <button type="submit" class="btn btn-primary btn-block py-2">Submit</button>
