@@ -28,7 +28,7 @@ class PostController extends Controller
     {
         $time = now()->addMinutes(10);
         $posts = Cache::tags(['blog-post'])->remember('blog-post-posts', $time, function () {
-            return BlogPost::Latest()->withCount('comments')->with('user', 'tags')->get();
+            return BlogPost::latestWithRelations()->get();
         });
 
 
@@ -132,14 +132,16 @@ class PostController extends Controller
             return auth()->user()->id ?? 0;
         });
 
+
         //if the id is 0 then there will be no user found output will be null
         return view(
             'posts.show',
             [
                 'post' => $blogPost,
                 'counter' => $counter,
-                'user' => User::find($id),
-
+                'user' => Cache::remember('show-user', now()->addMinutes(5), function () use ($id) {
+                    return User::find($id);
+                }),
             ]
         );
     }

@@ -16,10 +16,7 @@ class PostTagController extends Controller
         });
         $bp = Cache::tags(['blog-post'])->remember("blog-post-tag-{$tag}", $time, function () use ($tag) {
             return $tag->blogPosts()
-                ->latest()
-                ->withCount('comments')
-                ->with('user')
-                ->with('tags')
+                ->latestWithRelations()
                 ->get();
         });
 
