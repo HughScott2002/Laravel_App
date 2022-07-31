@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 // use Illuminate\Support\Facades\DB;
 
@@ -54,22 +56,22 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function store(StorePost $request)
     {
         //
+        // dd($request->hasFile('thumbnail'));
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
         $post = BlogPost::create($validated);
 
-        // $post->title = $validated['title'];
-        // $post->content = $validated['content'];
-        // $post->fill();
-        // $post->save();
-
-        // BlogPost::make();
-        // BlogPost::create();
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            $post->image()->save(
+                Image::create(['path' => $path])
+            );
+        }
 
         $request->session()->flash("Status-success", 'The Blog Post was created!');
 

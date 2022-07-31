@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+
+
 
 class BlogPost extends Model
 {
@@ -32,6 +35,11 @@ class BlogPost extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
+    public function image()
+    {
+        return $this->hasOne(Image::class);
     }
 
     public function scopeLatest(Builder $query)
@@ -64,10 +72,15 @@ class BlogPost extends Model
             Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
         static::updating(function (BlogPost $blogPost) {
-            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
+            Cache::flush();
         });
         static::restoring(function (BlogPost $blogPost) {
+            Cache::flush();
             $blogPost->comments()->restore();
+        });
+        static::creating(function () {
+            Cache::tags(['blog-post'])->flush();
+            // dd(Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}"));
         });
     }
 }

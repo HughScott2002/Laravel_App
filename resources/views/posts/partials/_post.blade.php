@@ -25,14 +25,17 @@
                 </div>
             @endif
         @endif
-
+        @if ()
+            
+        <img src="..." class="card-img-top" alt="...">
+        @endif
 
 
         <div class="card-body">
             <h5 class="card-title">
-                <a href="{{ route('posts.show', ['post' => $post->id]) }}">
+                < href="{{ route('posts.show', ['post' => $post->id]) }}">
                     {{ $post->title }}
-                </a>
+                </>a>
             </h5>
             <h6 class="card-subtitle mb-2 mt-1 text-muted">
                 Created: {{ $post->created_at->diffForHumans() }}
