@@ -7,8 +7,15 @@
 
 @section('content')
     <div class="py-2 py-lg-4">
-        <h2 class="p-md-4 py-4 px-2 text-center fs-2 fw-bolder fst-italic " style="background: rgb(215, 205, 192); ">
+        <h2 class="p-lg-5 p-4 px-2 mb-0 text-center fs-2 fw-bolder fst-italic " style="background: rgb(215, 205, 192); ">
             {{ $post->title }}</h2>
+        <div class="card">
+            {{-- {{ dd(env('APP_URL') . ':3000/storage/' . $post->image->path) }} --}}
+            {{-- {{ dd(Storage::url($post->image->path)) }} --}}
+            {{-- <img src="{{ asset($post->image->path) }}" class="card-img-top" alt="{{ $post->title }}"> --}}
+            <img src="{{ $post->image === null ? 'https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png' : $post->image->url() }}"
+                class="card-img-top" alt="{{ $post->title }}">
+        </div>
         {{-- <div class="d-flex justify-content-end">
             <h3 class=" mt-2 text-muted fs-5 fw-light fst-italic">Author: Mary Jane</h3>
             <div class="mx-2 my-2 pb-2" style="height: 4rem; width: 4rem; ">

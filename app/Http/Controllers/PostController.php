@@ -178,8 +178,27 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         $validated = $request->validated();
+
         $post->fill($validated);
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            if ($post->image) {
+                Storage::delete($post->image->path);
+                $post->image->path = $path;
+                $post->image->save();
+            } else {
+                $post->image()->save(
+                    Image::create(['path' => $path])
+                );
+            }
+            $post->image()->save(
+                Image::create(['path' => $path])
+            );
+        }
+
         $post->save();
+
 
         $request->session()
             ->flash("Status-success", "Your Record Has been updated");

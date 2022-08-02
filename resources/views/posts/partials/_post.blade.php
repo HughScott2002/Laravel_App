@@ -5,16 +5,15 @@
                 Trashed
             </div>
         @else
-            @if (now()->diffInMinutes($post->created_at) < 5)
+            @if (now()->diffInMinutes($post->created_at) <= 5)
                 <div class="card-header bg-info">
                     Featurd Post: Now!
                 </div>
-            @elseif (now()->diffInMinutes($post->created_at) < 60)
+            @elseif (now()->diffInMinutes($post->created_at) >= 6 && now()->diffInMinutes($post->created_at) <= 60)
                 <div class="card-header">
-
                     Featurd Post: Hour
                 </div>
-            @elseif (now()->diffInMinutes($post->created_at) < 1440)
+            @elseif (now()->diffInMinutes($post->created_at) <= 1440)
                 <div class="card-header ">
 
                     Featurd Post: Today
@@ -25,17 +24,18 @@
                 </div>
             @endif
         @endif
-        @if ()
-            
-        <img src="..." class="card-img-top" alt="...">
-        @endif
+
+        {{-- @if ($post->image() !== null)
+            <img src="https://www.blogtyrant.com/wp-content/uploads/2013/01/how-to-get-more-blog-comments.jpg"
+                class="card-img-top" alt="...">
+        @endif --}}
 
 
         <div class="card-body">
             <h5 class="card-title">
-                < href="{{ route('posts.show', ['post' => $post->id]) }}">
+                <a href="{{ route('posts.show', ['post' => $post->id]) }}">
                     {{ $post->title }}
-                </>a>
+                </a>
             </h5>
             <h6 class="card-subtitle mb-2 mt-1 text-muted">
                 Created: {{ $post->created_at->diffForHumans() }}

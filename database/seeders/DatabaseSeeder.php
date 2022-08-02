@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
         //     'remember_token' => Str::random(10),
         // ]);
         // Cache::tags(['blog-post'])->flush();
-        Cache::flush();
         // dd($users->count(), $jane->count(), $else->count());
+        Cache::flush();
         $this->call([
             UsersTableSeeder::class,
             BlogPostsTableSeeder::class,
@@ -42,5 +42,6 @@ class DatabaseSeeder extends Seeder
             TagsTableSeeder::class,
             BlogPostTagTableSeeder::class
         ]);
+        Cache::flush();
     }
 }
